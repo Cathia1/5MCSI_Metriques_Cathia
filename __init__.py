@@ -46,7 +46,7 @@ def extract_minutes(date_string):
 def commits():
     try:
         # 1. Appel API GitHub
-        url = "https://api.github.com/repos/OpenRSI/5MCSI_Metriques/commits"
+        url = "https://api.github.com/repos/Cathia1/5MCSI_Metriques_Cathia/commits"
         response = requests.get(url, timeout=10)
         response.raise_for_status()
         commits_json = response.json()
