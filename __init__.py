@@ -42,35 +42,38 @@ def extract_minutes(date_string):
         return jsonify({'minutes': minutes})
 
 @app.route("/commits/")
-def commits_chart():
-    # Appel à l'API GitHub
+def commits():
+    # 1. Appel de l’API GitHub
     url = "https://api.github.com/repos/OpenRSI/5MCSI_Metriques/commits"
     response = requests.get(url)
 
     if response.status_code != 200:
-        return "Erreur lors de l'appel à l'API GitHub"
+        return "Erreur API GitHub", 500
 
-    commits = response.json()
-
-    # Dictionnaire minute → nombre de commits
-    commits_by_minute = {}
-
-    for commit in commits:
+    commits_json = response.json()
+  
+    # 2. Extraction des minutes
+    minutes = []
+    for c in commits_json:
         try:
-            date_str = commit["commit"]["author"]["date"]   # ex "2024-02-11T11:57:27Z"
-            date_object = datetime.strptime(date_str, '%Y-%m-%dT%H:%M:%SZ')
-            minute = date_object.minute
-
-            commits_by_minute[minute] = commits_by_minute.get(minute, 0) + 1
+            date_str = c["commit"]["author"]["date"]  # ex: "2024-02-11T11:57:27Z"
+            date_obj = datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%SZ")
+            minutes.append(date_obj.minute)
         except:
-            continue
+            pass  # ignore les erreurs
 
-    # On transforme dict en liste pour le HTML
-    commits_list = [
-        {"minute": minute, "count": count}
-        for minute, count in commits_by_minute.items()
-    ]
+    # 3. Comptage des commits par minute
+    count_by_minute = Counter(minutes)
 
+    # 4. Préparation à envoyer au HTML
+    commits_list = []
+    for minute, count in count_by_minute.items():
+        commits_list.append({"minute": minute, "count": count})
+
+    # TRI pour éviter les erreurs d'affichage
+    commits_list = sorted(commits_list, key=lambda x: x["minute"])
+
+    # 5. Envoi au template
     return render_template("commits.html", commits=commits_list)
   
 if __name__ == "__main__":
