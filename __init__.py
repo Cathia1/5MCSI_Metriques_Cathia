@@ -40,7 +40,7 @@ def histogramme():
 
 GITHUB_COMMITS_URL = "https://api.github.com/repos/Cathia1/5MCSI_Metriques_Cathia/commits"
 
-@app.route("/api/commits-data")  # ← CHANGÉ ICI (enlevé le / final)
+@app.route("/commits-data/")
 def commits_data():
     """
     Retourne le nombre de commits groupés par minute (0 à 59)
