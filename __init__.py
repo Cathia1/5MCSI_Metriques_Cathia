@@ -42,35 +42,53 @@ def extract_minutes(date_string):
         minutes = date_object.minute
         return jsonify({'minutes': minutes})
 
+        GITHUB_COMMITS_URL = "https://api.github.com/repos/Cathia1/5MCSI_Metriques_Cathia/commits"
+
+
+@app.route("/commits-data/")
+def commits_data():
+    """
+    Retourne le nombre de commits groupés par minute (0 à 59)
+    au format JSON pour le graphique.
+    """
+
+    # GitHub aime bien avoir un User-Agent
+    req = Request(GITHUB_COMMITS_URL, headers={"User-Agent": "Flask-App"})
+    response = urlopen(req)
+    raw_content = response.read()
+    commits_list = json.loads(raw_content.decode("utf-8"))
+
+    # Compteur de commits par minute (0–59)
+    minutes_count = {m: 0 for m in range(60)}
+
+    for commit in commits_list:
+        # Les données qui nous intéressent : commit -> author -> date
+        date_str = (
+            commit.get("commit", {})
+                  .get("author", {})
+                  .get("date")
+        )
+        if not date_str:
+            continue
+
+        # Exemple de format : "2024-02-11T11:57:27Z"
+        dt = datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%SZ")
+        minute = dt.minute
+        minutes_count[minute] += 1
+
+    # On renvoie une liste de dicts {minute, count}
+    results = [
+        {"minute": m, "count": minutes_count[m]}
+        for m in range(60)
+    ]
+
+    return jsonify(results=results)
+
+
 @app.route("/commits/")
-def commits():
-    try:
-        # 1. Appel API GitHub
-        url = "https://api.github.com/repos/Cathia1/5MCSI_Metriques_Cathia/commits"
-        response = requests.get(url, timeout=10)
-        response.raise_for_status()
-        commits_json = response.json()
-
-        # 2. Extraction des minutes
-        minutes = []
-        for c in commits_json:
-            try:
-                date_str = c["commit"]["author"]["date"]  # "2024-02-11T11:57:27Z"
-                date_obj = datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%SZ")
-                minutes.append(date_obj.minute)
-            except:
-                pass
-
-        # 3. Comptage par minute
-        counts = Counter(minutes)
-        commits_list = [{"minute": m, "count": counts[m]} for m in sorted(counts)]
-
-        # 4. Envoi au template
-        return render_template("commits.html", commits=commits_list)
-
-    except Exception as e:
-        # Erreur simple pour debug
-        return f"Une erreur est survenue : {str(e)}"
+def commits_page():
+    # Page HTML avec le graphique
+    return render_template("commits.html")
   
 if __name__ == "__main__":
   app.run(debug=True)
