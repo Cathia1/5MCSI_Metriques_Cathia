@@ -3,127 +3,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact</title>
+    <title>Contactez-nous</title>
+
+    <!-- Icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
         body {
-            font-family: "Segoe UI", Arial, sans-serif;
-            background: linear-gradient(135deg, #74b9ff, #a29bfe);
             margin: 0;
-            padding: 0;
+            font-family: "Segoe UI", Roboto, Arial, sans-serif;
+            background: #f5f7fa;
+            color: #333;
         }
 
+        /* Bandeau haut */
+        .header {
+            background: linear-gradient(135deg, #0052cc, #0275d8);
+            padding: 40px 20px;
+            color: white;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 36px;
+            font-weight: 700;
+        }
+        .header p {
+            margin-top: 8px;
+            font-size: 18px;
+        }
+
+        /* Contenu général */
         .container {
-            width: 100%;
-            max-width: 500px;
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        /* Carte "Informations" */
+        .info-box {
+            flex: 1 1 330px;
             background: white;
-            margin: 80px auto;
-            padding: 30px;
-            border-radius: 18px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
             animation: fadeIn 0.8s ease-in-out;
         }
-
-        h1 {
-            text-align: center;
-            color: #2d3436;
-            margin-bottom: 25px;
-            font-size: 28px;
+        .info-box h2 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #0052cc;
+        }
+        .info-item {
+            margin-bottom: 18px;
+            font-size: 16px;
+        }
+        .info-item i {
+            color: #0052cc;
+            margin-right: 10px;
         }
 
+        /* Formulaire */
+        .contact-form {
+            flex: 1 1 450px;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+        }
+        .contact-form h2 {
+            font-size: 24px;
+            color: #0052cc;
+            margin-bottom: 20px;
+        }
         label {
-            font-weight: bold;
-            color: #2d3436;
-            display: block;
-            margin-bottom: 6px;
+            font-weight: 600;
             margin-top: 15px;
+            display: block;
         }
-
         input, textarea {
             width: 100%;
             padding: 12px;
-            margin-top: 4px;
-            border: 1px solid #dcdde1;
-            border-radius: 10px;
+            margin-top: 6px;
+            border-radius: 8px;
+            border: 1px solid #ccd6e0;
             font-size: 15px;
-            box-sizing: border-box;
             transition: border-color 0.3s;
         }
-
         input:focus, textarea:focus {
-            border-color: #6c5ce7;
+            border-color: #0052cc;
             outline: none;
-            box-shadow: 0 0 5px rgba(108,92,231,0.4);
+            box-shadow: 0 0 6px rgba(0,82,204,0.3);
         }
-
         textarea {
-            resize: vertical;
             min-height: 120px;
+            resize: vertical;
         }
 
         button {
+            margin-top: 25px;
             width: 100%;
             padding: 14px;
-            margin-top: 25px;
-            background: #6c5ce7;
-            border: none;
-            border-radius: 12px;
-            color: white;
             font-size: 17px;
-            font-weight: bold;
+            color: white;
+            background: #0052cc;
+            border: none;
+            border-radius: 10px;
             cursor: pointer;
+            font-weight: 600;
             transition: background 0.3s;
         }
-
         button:hover {
-            background: #5a4bd6;
+            background: #003d99;
+        }
+
+        /* Pied de page */
+        .footer {
+            text-align: center;
+            margin: 40px 0 20px;
+            font-size: 15px;
+            color: #777;
+        }
+        .footer a {
+            text-decoration: none;
+            font-weight: bold;
+            color: #0052cc;
         }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to   { opacity: 1; transform: translateY(0); }
         }
-
-        .footer {
-            text-align: center;
-            margin-top: 15px;
-            color: #2d3436;
-        }
-
-        .footer a {
-            color: #2d3436;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
-        }
-
     </style>
 
 </head>
 <body>
 
+    <!-- HEADER -->
+    <div class="header">
+        <h1>Contactez-nous</h1>
+        <p>Nous sommes à votre écoute et répondons sous 24h</p>
+    </div>
+
+    <!-- CONTENU PRINCIPAL -->
     <div class="container">
-        <h1>Contactez-moi</h1>
 
-        <form>
-            <label for="nom">Nom :</label>
-            <input type="text" id="nom" placeholder="Votre nom">
+        <!-- Informations entreprise -->
+        <div class="info-box">
+            <h2>Informations de contact</h2>
 
-            <label for="prenom">Prénom :</label>
-            <input type="text" id="prenom" placeholder="Votre prénom">
+            <div class="info-item">
+                <i class="fa-solid fa-building"></i>
+                <strong>Entreprise :</strong> Cathia1
+            </div>
 
-            <label for="message">Votre message :</label>
-            <textarea id="message" placeholder="Écrivez votre message ici..."></textarea>
+            <div class="info-item">
+                <i class="fa-solid fa-location-dot"></i>
+                242 Rue du Faubourb St Antoine, 75012 Paris, France
+            </div>
 
-            <button type="button">Envoyer</button>
-        </form>
+            <div class="info-item">
+                <i class="fa-solid fa-phone"></i>
+                +33 1 48 92 77 21
+            </div>
 
-        <div class="footer">
-            <p><a href="/">Retour à l'accueil</a></p>
+            <div class="info-item">
+                <i class="fa-solid fa-envelope"></i>
+                contact@Cathia-solutions.fr
+            </div>
+
+            <div class="info-item">
+                <i class="fa-solid fa-clock"></i>
+                Lundi – Vendredi : 9h00 – 18h00
+            </div>
         </div>
+
+        <!-- Formulaire -->
+        <div class="contact-form">
+            <h2>Envoyez-nous un message</h2>
+
+            <form>
+                <label for="nom">Nom</label>
+                <input type="text" id="nom" placeholder="Votre nom">
+
+                <label for="prenom">Prénom</label>
+                <input type="text" id="prenom" placeholder="Votre prénom">
+
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Votre adresse email">
+
+                <label for="message">Message</label>
+                <textarea id="message" placeholder="Votre message..."></textarea>
+
+                <button type="button">
+                    <i class="fa-solid fa-paper-plane"></i> Envoyer
+                </button>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <p><a href="/">Retour à l'accueil</a></p>
+        <p>© 2025 Cathia1 — Tous droits réservés</p>
     </div>
 
 </body>
