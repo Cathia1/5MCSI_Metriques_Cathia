@@ -4,7 +4,7 @@ from datetime import datetime
 from urllib.request import urlopen, Request
 import sqlite3
                                                                                                                                        
-app = Flask(_name_)                                                                                                                  
+app = Flask(__name__)                                                                                                                  
                                                                                                                                        
 @app.route('/')
 def hello_world():
