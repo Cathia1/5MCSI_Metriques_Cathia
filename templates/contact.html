@@ -3,214 +3,586 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contactez-nous</title>
-
-    <!-- Icônes -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
+    <title>Contactez-nous </title>
+    
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            margin: 0;
-            font-family: "Segoe UI", Roboto, Arial, sans-serif;
-            background: #f5f7fa;
-            color: #333;
+            font-family: 'Poppins', sans-serif;
+            background: #0f0f0f;
+            color: #fff;
+            overflow-x: hidden;
         }
 
-        /* Bandeau haut */
-        .header {
-            background: linear-gradient(135deg, #0052cc, #0275d8);
-            padding: 40px 20px;
-            color: white;
-            text-align: center;
-        }
-        .header h1 {
-            margin: 0;
-            font-size: 36px;
-            font-weight: 700;
-        }
-        .header p {
-            margin-top: 8px;
-            font-size: 18px;
+   
+        .wave-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(180deg, #0f0f0f 0%, #1a1a2e 100%);
         }
 
-        /* Contenu général */
-        .container {
-            max-width: 1100px;
-            margin: 40px auto;
-            padding: 0 20px;
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 200%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%2316213e' fill-opacity='0.3' d='M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E") repeat-x;
+            animation: wave 15s linear infinite;
+        }
+
+        .wave:nth-child(2) {
+            bottom: 10px;
+            opacity: 0.5;
+            animation: wave 20s linear infinite;
+        }
+
+        .wave:nth-child(3) {
+            bottom: 20px;
+            opacity: 0.3;
+            animation: wave 25s linear infinite;
+        }
+
+        @keyframes wave {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+   
+        .main-container {
+            min-height: 100vh;
             display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            position: relative;
         }
 
-        /* Carte "Informations" */
-        .info-box {
-            flex: 1 1 330px;
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-            animation: fadeIn 0.8s ease-in-out;
-        }
-        .info-box h2 {
-            font-size: 24px;
-            margin-bottom: 15px;
-            color: #0052cc;
-        }
-        .info-item {
-            margin-bottom: 18px;
-            font-size: 16px;
-        }
-        .info-item i {
-            color: #0052cc;
-            margin-right: 10px;
+        .contact-wrapper {
+            max-width: 1100px;
+            width: 100%;
+            display: flex;
+            gap: 40px;
+            align-items: stretch;
         }
 
-        /* Formulaire */
-        .contact-form {
-            flex: 1 1 450px;
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+   
+        .info-card {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 50px;
+            position: relative;
+            overflow: hidden;
+            animation: slideInLeft 1s ease-out;
         }
-        .contact-form h2 {
-            font-size: 24px;
-            color: #0052cc;
+
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 242, 254, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .info-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .info-card h1 {
+            font-size: 3em;
+            font-weight: 700;
             margin-bottom: 20px;
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-        label {
-            font-weight: 600;
-            margin-top: 15px;
+
+        .info-card p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 40px;
+        }
+
+        .contact-details {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .detail-item:hover {
+            background: rgba(0, 242, 254, 0.1);
+            border-color: rgba(0, 242, 254, 0.3);
+            transform: translateX(10px);
+        }
+
+        .icon-wrapper {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .icon-wrapper svg {
+            width: 24px;
+            height: 24px;
+            fill: #0f0f0f;
+        }
+
+        .detail-text h3 {
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 5px;
+            font-weight: 400;
+        }
+
+        .detail-text p {
+            font-size: 1.1em;
+            color: #fff;
+            margin: 0;
+        }
+
+       
+        .form-card {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 50px;
+            animation: slideInRight 1s ease-out;
+        }
+
+        .form-card h2 {
+            font-size: 2em;
+            margin-bottom: 30px;
+            color: #fff;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-group label {
             display: block;
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9em;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        input, textarea {
+
+        .form-group input,
+        .form-group textarea {
             width: 100%;
-            padding: 12px;
-            margin-top: 6px;
-            border-radius: 8px;
-            border: 1px solid #ccd6e0;
-            font-size: 15px;
-            transition: border-color 0.3s;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            color: #fff;
+            font-size: 1em;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
         }
-        input:focus, textarea:focus {
-            border-color: #0052cc;
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
             outline: none;
-            box-shadow: 0 0 6px rgba(0,82,204,0.3);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #00f2fe;
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
         }
-        textarea {
-            min-height: 120px;
+
+        .form-group textarea {
             resize: vertical;
+            min-height: 120px;
         }
 
-        button {
-            margin-top: 25px;
+        .input-line {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #00f2fe 0%, #4facfe 100%);
+            transition: width 0.3s ease;
+        }
+
+        .form-group input:focus ~ .input-line,
+        .form-group textarea:focus ~ .input-line {
             width: 100%;
-            padding: 14px;
-            font-size: 17px;
-            color: white;
-            background: #0052cc;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
             border: none;
-            border-radius: 10px;
-            cursor: pointer;
+            border-radius: 15px;
+            color: #0f0f0f;
+            font-size: 1.1em;
             font-weight: 600;
-            transition: background 0.3s;
-        }
-        button:hover {
-            background: #003d99;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
         }
 
-        /* Pied de page */
-        .footer {
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.3);
+            transition: left 0.5s ease;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 242, 254, 0.5);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .back-link {
             text-align: center;
-            margin: 40px 0 20px;
-            font-size: 15px;
-            color: #777;
-        }
-        .footer a {
-            text-decoration: none;
-            font-weight: bold;
-            color: #0052cc;
+            margin-top: 30px;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to   { opacity: 1; transform: translateY(0); }
+        .back-link a {
+            color: #00f2fe;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-link a:hover {
+            color: #4facfe;
+            transform: translateX(-5px);
+        }
+
+       
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+      
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+      
+        @media (max-width: 968px) {
+            .contact-wrapper {
+                flex-direction: column;
+            }
+
+            .info-card,
+            .form-card {
+                padding: 40px 30px;
+            }
+
+            .info-card h1 {
+                font-size: 2.5em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .info-card,
+            .form-card {
+                padding: 30px 20px;
+            }
+
+            .info-card h1 {
+                font-size: 2em;
+            }
         }
     </style>
-
 </head>
 <body>
-
-    <!-- HEADER -->
-    <div class="header">
-        <h1>Contactez-nous</h1>
-        <p>Nous sommes à votre écoute et répondons sous 24h</p>
+  
+    <div class="wave-background">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
     </div>
 
-    <!-- CONTENU PRINCIPAL -->
-    <div class="container">
+ 
+    <div class="stars" id="stars"></div>
 
-        <!-- Informations entreprise -->
-        <div class="info-box">
-            <h2>Informations de contact</h2>
+    
+    <div class="main-container">
+        <div class="contact-wrapper">
+            
+           
+            <div class="info-card">
+                <div class="info-content">
+                    <h1>Parlons ensemble</h1>
+                    <p>
+                        Nous sommes toujours ravis d'échanger avec vous. 
+                        Que ce soit pour un projet, une question ou simplement 
+                        pour discuter, n'hésitez pas à nous contacter.
+                    </p>
 
-            <div class="info-item">
-                <i class="fa-solid fa-building"></i>
-                <strong>Entreprise :</strong> Cathia1
+                    <div class="contact-details">
+                        <div class="detail-item">
+                            <div class="icon-wrapper">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                                </svg>
+                            </div>
+                            <div class="detail-text">
+                                <h3>Email</h3>
+                                <p>hello@tawarano.com</p>
+                            </div>
+                        </div>
+
+                        <div class="detail-item">
+                            <div class="icon-wrapper">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                                </svg>
+                            </div>
+                            <div class="detail-text">
+                                <h3>Téléphone</h3>
+                                <p>+33 1 23 45 67 89</p>
+                            </div>
+                        </div>
+
+                        <div class="detail-item">
+                            <div class="icon-wrapper">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                                </svg>
+                            </div>
+                            <div class="detail-text">
+                                <h3>Adresse</h3>
+                                <p>123 Rue de paris, France</p>
+                            </div>
+                        </div>
+
+                        <div class="detail-item">
+                            <div class="icon-wrapper">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                                </svg>
+                            </div>
+                            <div class="detail-text">
+                                <h3>Horaires</h3>
+                                <p>Lun - Ven : 9h - 18h</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="info-item">
-                <i class="fa-solid fa-location-dot"></i>
-                242 Rue du Faubourb St Antoine, 75012 Paris, France
+        
+            <div class="form-card">
+                <h2>Envoyez un message</h2>
+                
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="nom">Nom</label>
+                        <input 
+                            type="text" 
+                            id="nom" 
+                            name="nom" 
+                            placeholder="Votre nom" 
+                            required
+                        >
+                        <div class="input-line"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="prenom">Prénom</label>
+                        <input 
+                            type="text" 
+                            id="prenom" 
+                            name="prenom" 
+                            placeholder="Votre prénom" 
+                            required
+                        >
+                        <div class="input-line"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea 
+                            id="message" 
+                            name="message" 
+                            placeholder="Votre message..." 
+                            required
+                        ></textarea>
+                        <div class="input-line"></div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        Envoyer
+                    </button>
+                </form>
+
+                <div class="back-link">
+                    <a href="/">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                        </svg>
+                        Retour à l'accueil
+                    </a>
+                </div>
             </div>
 
-            <div class="info-item">
-                <i class="fa-solid fa-phone"></i>
-                +33 1 48 92 77 21
-            </div>
-
-            <div class="info-item">
-                <i class="fa-solid fa-envelope"></i>
-                contact@Cathia-solutions.fr
-            </div>
-
-            <div class="info-item">
-                <i class="fa-solid fa-clock"></i>
-                Lundi – Vendredi : 9h00 – 18h00
-            </div>
         </div>
-
-        <!-- Formulaire -->
-        <div class="contact-form">
-            <h2>Envoyez-nous un message</h2>
-
-            <form>
-                <label for="nom">Nom</label>
-                <input type="text" id="nom" placeholder="Votre nom">
-
-                <label for="prenom">Prénom</label>
-                <input type="text" id="prenom" placeholder="Votre prénom">
-
-                <label for="email">Email</label>
-                <input type="email" id="email" placeholder="Votre adresse email">
-
-                <label for="message">Message</label>
-                <textarea id="message" placeholder="Votre message..."></textarea>
-
-                <button type="button">
-                    <i class="fa-solid fa-paper-plane"></i> Envoyer
-                </button>
-            </form>
-        </div>
-
     </div>
 
-    <!-- FOOTER -->
-    <div class="footer">
-        <p><a href="/">Retour à l'accueil</a></p>
-        <p>© 2025 Cathia1 — Tous droits réservés</p>
-    </div>
+    <script>
+      
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starsContainer.appendChild(star);
+        }
 
+   
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+           
+            const btn = this.querySelector('.submit-btn');
+            btn.textContent = 'Message envoyé !';
+            btn.style.background = 'linear-gradient(135deg, #00ff88 0%, #00cc66 100%)';
+            
+            setTimeout(() => {
+                btn.textContent = 'Envoyer';
+                btn.style.background = 'linear-gradient(135deg, #00f2fe 0%, #4facfe 100%)';
+                this.reset();
+            }, 2000);
+        });
+
+      
+        document.addEventListener('mousemove', (e) => {
+            const cards = document.querySelectorAll('.info-card, .form-card');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            cards.forEach(card => {
+                const moveX = (x - 0.5) * 20;
+                const moveY = (y - 0.5) * 20;
+                card.style.transform = perspective(1000px) rotateY(${moveX}deg) rotateX(${-moveY}deg);
+            });
+        });
+    </script>
 </body>
 </html>
