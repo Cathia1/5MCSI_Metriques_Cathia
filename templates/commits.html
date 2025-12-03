@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Activité GitHub - Commits par minute</title>
+
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <style>
+        body {
+            font-family: "Inter", Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #eef2f3, #dfe9f3);
+        }
+
+        header {
+            background: #1a73e8;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            font-size: 1.8em;
+            letter-spacing: 1px;
+            font-weight: 600;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+        }
+
+        #chart-container {
+            margin: 40px auto;
+            width: 90%;
+            max-width: 1000px;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        #summary {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #1a73e8;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                font-size: 1.4em;
+            }
+        }
+    </style>
+
+    <script>
+        google.charts.load("current", { packages: ["corechart"] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            // Récupération et tri des données
+            var commitData = [
+                {% for c in commits %}
+                    { minute: {{ c.minute }}, count: {{ c.count }} },
+                {% endfor %}
+            ];
+
+            commitData.sort((a, b) => a.minute - b.minute);
+
+            // Construction du tableau Google Charts
+            var dataArray = [
+                ["Minute", "Commits", { role: "style" }],
+            ];
+
+            commitData.forEach(obj => {
+                let dynamicColor = `hsl(${(obj.minute * 6) % 360}, 70%, 55%)`;
+                dataArray.push([
+                    obj.minute.toString(),
+                    obj.count,
+                    "color: " + dynamicColor
+                ]);
+            });
+
+            var data = google.visualization.arrayToDataTable(dataArray);
+
+            // Options du graphique
+            var options = {
+                title: "Nombre de commits GitHub par minute",
+                height: 500,
+                animation: {
+                    startup: true,
+                    duration: 800,
+                    easing: 'out'
+                },
+                legend: { position: "none" },
+                hAxis: {
+                    title: "Minute (0 - 59)",
+                },
+                vAxis: {
+                    title: "Commits",
+                    minValue: 0
+                },
+                bar: { groupWidth: "75%" }
+            };
+
+            var chart = new google.visualization.ColumnChart(
+                document.getElementById("chart_div")
+            );
+            chart.draw(data, options);
+
+            // Résumé dynamique
+            const totalCommits = commitData.reduce((sum, x) => sum + x.count, 0);
+            document.getElementById("summary").innerText =
+                `Total de ${totalCommits} commits analysés`;
+        }
+    </script>
+
+</head>
+<body>
+
+    <header>📊 Activité GitHub – Analyse des commits</header>
+
+    <div id="chart-container">
+        <div id="chart_div"></div>
+        <p id="summary"></p>
+    </div>
+
+    <a href="/">⬅ Retour à l'accueil</a>
+
+</body>
+</html>
