@@ -4,7 +4,7 @@ from datetime import datetime
 from urllib.request import urlopen, Request
 import sqlite3
                                                                                                                                        
-app = Flask(_name_)                                                                                                                  
+app = Flask(__name__)                                                                                                                  
                                                                                                                                        
 @app.route('/')
 def hello_world():
@@ -86,5 +86,5 @@ def commits_page():
     return render_template("commits.html")
 
   
-if _name_ == "_main_":
+if __name__ == "__main__":
     app.run(debug=True)
