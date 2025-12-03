@@ -43,38 +43,33 @@ def extract_minutes(date_string):
 
 @app.route("/commits/")
 def commits():
-    # 1. Appel de l’API GitHub
-    url = "https://api.github.com/repos/OpenRSI/5MCSI_Metriques/commits"
-    response = requests.get(url)
+    try:
+        # 1. Appel API GitHub
+        url = "https://api.github.com/repos/OpenRSI/5MCSI_Metriques/commits"
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        commits_json = response.json()
 
-    if response.status_code != 200:
-        return "Erreur API GitHub", 500
+        # 2. Extraction des minutes
+        minutes = []
+        for c in commits_json:
+            try:
+                date_str = c["commit"]["author"]["date"]  # "2024-02-11T11:57:27Z"
+                date_obj = datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%SZ")
+                minutes.append(date_obj.minute)
+            except:
+                pass
 
-    commits_json = response.json()
-  
-    # 2. Extraction des minutes
-    minutes = []
-    for c in commits_json:
-        try:
-            date_str = c["commit"]["author"]["date"]  # ex: "2024-02-11T11:57:27Z"
-            date_obj = datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%SZ")
-            minutes.append(date_obj.minute)
-        except:
-            pass  # ignore les erreurs
+        # 3. Comptage par minute
+        counts = Counter(minutes)
+        commits_list = [{"minute": m, "count": counts[m]} for m in sorted(counts)]
 
-    # 3. Comptage des commits par minute
-    count_by_minute = Counter(minutes)
+        # 4. Envoi au template
+        return render_template("commits.html", commits=commits_list)
 
-    # 4. Préparation à envoyer au HTML
-    commits_list = []
-    for minute, count in count_by_minute.items():
-        commits_list.append({"minute": minute, "count": count})
-
-    # TRI pour éviter les erreurs d'affichage
-    commits_list = sorted(commits_list, key=lambda x: x["minute"])
-
-    # 5. Envoi au template
-    return render_template("commits.html", commits=commits_list)
+    except Exception as e:
+        # Erreur simple pour debug
+        return f"Une erreur est survenue : {str(e)}"
   
 if __name__ == "__main__":
   app.run(debug=True)
