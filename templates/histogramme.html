@@ -1,186 +1,62 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Histogramme - Températures Tawarano</title>
 
-    <!-- Google Charts -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-    <script type="text/javascript">
-        // Chargement de Google Charts
-        google.charts.load('current', {'packages':['corechart']});
+    <script>
+        google.charts.load('current', {packages: ['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
 
-        // Initialisation après chargement de la librairie
-        google.charts.setOnLoadCallback(init);
+        function drawChart() {
 
-        async function init() {
-            try {
-                const raw = await fetch('/meteo', { cache: 'no-store' });
-                if (!raw.ok) throw new Error('Erreur HTTP: ' + raw.status);
-                const payload = await raw.json();
-                const results = payload.results || [];
+            var data = google.visualization.arrayToDataTable([
+                ['Jour', 'Température (°C)'],
+                ['Jour 1', 22],
+                ['Jour 2', 24],
+                ['Jour 3', 26],
+                ['Jour 4', 23],
+                ['Jour 5', 25]
+            ]);
 
-                // Transformer et trier les données
-                const points = results
-                    .map(r => {
-                        // On suppose que 'Jour' est un timestamp unix (seconds).
-                        // Si 'Jour' contient une chaîne ISO, la logique est robuste aussi.
-                        const dt = Number(r.Jour);
-                        const date = Number.isFinite(dt) ? new Date(dt * 1000) : new Date(r.Jour);
-                        const temp = Number(r.temp);
-                        return { date, temp };
-                    })
-                    .filter(p => p.date instanceof Date && !isNaN(p.date) && !isNaN(p.temp))
-                    .sort((a, b) => a.date - b.date);
-
-                drawChartFromPoints(points);
-            } catch (err) {
-                showError(err.message || String(err));
-            }
-        }
-
-        // Retourne une couleur hex simple en fonction de la température (bleu -> rouge)
-        function colorForTemp(t) {
-            // bornes -10 -> 35
-            const min = -10, max = 35;
-            const norm = Math.max(0, Math.min(1, (t - min) / (max - min)));
-            // gradient from blue (cool) to red (hot)
-            const r = Math.round(255 * norm);
-            const g = Math.round(160 * (1 - Math.abs(norm - 0.5) * 2)); // mid green tint
-            const b = Math.round(255 * (1 - norm));
-            return '#' + [r,g,b].map(n => n.toString(16).padStart(2, '0')).join('');
-        }
-
-        // Format date en chaîne lisible en français: "JJ/MM HH:MM"
-        function formatDateFr(d) {
-            const pad = n => String(n).padStart(2, '0');
-            return `${pad(d.getDate())}/${pad(d.getMonth()+1)} ${pad(d.getHours())}h${pad(d.getMinutes())}`;
-        }
-
-        function drawChartFromPoints(points) {
-            // Construire la table de données attendue par Google Charts
-            // colonnes: [label, valeur, {role: 'style'}]
-            const header = ['Date', 'Température (°C)', { role: 'style' }];
-            const rows = points.map(p => {
-                const label = formatDateFr(p.date);
-                const tempRounded = Math.round(p.temp * 10) / 10; // 1 décimale
-                const color = colorForTemp(p.temp);
-                return [label, tempRounded, color];
-            });
-
-            const dataArray = [header, ...rows];
-            const data = google.visualization.arrayToDataTable(dataArray);
-
-            const temps = points.map(p => p.temp);
-            const minTemp = Math.min(...temps);
-            const maxTemp = Math.max(...temps);
-
-            const options = {
+            var options = {
                 title: 'Évolution des températures à Tawarano',
-                width: Math.min(window.innerWidth - 40, 1200),
+                width: 1200,
                 height: 600,
                 legend: { position: 'none' },
-                hAxis: {
-                    title: 'Date / Heure',
-                    slantedText: true,
-                    slantedTextAngle: 45
-                },
-                vAxis: {
-                    title: 'Température (°C)',
-                    viewWindow: {
-                        min: Math.floor(Math.min(minTemp, 0) - 2),
-                        max: Math.ceil(maxTemp + 2)
-                    }
-                },
-                bar: { groupWidth: '70%' },
-                chartArea: {
-                    width: '82%',
-                    height: '72%'
-                },
-                animation: {
-                    startup: true,
-                    duration: 600,
-                    easing: 'out'
-                }
+                hAxis: { title: 'Jour', slantedText: true, slantedTextAngle: 45 },
+                vAxis: { title: 'Température (°C)', minValue: 0 },
+                bar: { groupWidth: '75%' },
+                chartArea: { width: '80%', height: '70%' }
             };
 
-            const chartDiv = document.getElementById('chart_div');
-            const chart = new google.visualization.ColumnChart(chartDiv);
+            var chart = new google.visualization.ColumnChart(
+                document.getElementById('chart_div')
+            );
             chart.draw(data, options);
-
-            // Responsive : redessiner au resize (débounce simple)
-            let resizeTimer;
-            window.addEventListener('resize', () => {
-                clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(() => chart.draw(data, options), 250);
-            });
-
-            // Masquer le message d'état s'il y en avait un
-            const status = document.getElementById('status');
-            if (status) status.textContent = '';
-        }
-
-        function showError(msg) {
-            const status = document.getElementById('status');
-            status.textContent = 'Impossible de récupérer les données météo : ' + msg;
-            status.style.color = 'crimson';
         }
     </script>
 
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f5f7fa;
-            color: #222;
-        }
-        h1 {
-            color: #222;
-            text-align: center;
-            margin-bottom: 4px;
-        }
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        h1 { text-align: center; color: #333; }
         #chart_div {
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-            padding: 18px;
-            margin: 18px auto;
-            max-width: 1250px;
-        }
-        #status {
-            text-align: center;
-            margin-top: 12px;
-            font-weight: 600;
-        }
-        p.link-row {
-            text-align: center;
-            margin-top: 18px;
-        }
-        a {
-            color: #1a73e8;
-            text-decoration: none;
-            font-weight: 600;
-        }
-        a:hover { text-decoration: underline; }
-        @media (max-width: 600px) {
-            #chart_div { padding: 8px; }
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 20px auto;
         }
     </style>
 </head>
 <body>
-    <h1>Histogramme des températures — Tawarano</h1>
 
-    <div id="chart_div">
-        <!-- Le graphique sera dessiné ici -->
-        <div id="loading" style="text-align:center; padding:30px 0;">
-            <em>Chargement des données météo…</em>
-        </div>
-    </div>
+    <h1>Histogramme des températures – Tawarano</h1>
 
-    <div id="status" aria-live="polite" style="margin-top:10px; text-align:center;"></div>
+    <div id="chart_div"></div>
 
-    <p class="link-row"><a href="/">← Retour à l'accueil</a></p>
 </body>
 </html>
