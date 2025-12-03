@@ -3,74 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analyse des Commits - Tawarano</title>
+    <title>Analyse des Commits - Dashboard Professionnel</title>
     
     <!-- Google Charts -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 40px 20px;
-            position: relative;
-            overflow-x: hidden;
+        :root {
+            --primary: #5B4FE9;
+            --secondary: #7C3AED;
+            --accent: #3B82F6;
+            --dark: #1E293B;
+            --light: #F8FAFC;
+            --gray: #64748B;
+            --border: #E2E8F0;
+            --shadow: rgba(91, 79, 233, 0.15);
         }
 
-        /* Particules animées en arrière-plan */
-        .particles {
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #5B4FE9 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: var(--dark);
+            position: relative;
+        }
+
+        /* Grille de fond professionnelle */
+        body::before {
+            content: '';
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
             z-index: 0;
             pointer-events: none;
         }
 
-        .particle {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            animation: float 15s infinite;
+        /* Effet de lumière animé */
+        .light-effect {
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(91, 79, 233, 0.1) 0%, transparent 70%);
+            animation: rotate-light 30s linear infinite;
+            z-index: 0;
+            pointer-events: none;
         }
 
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0) translateX(0);
-                opacity: 0;
-            }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% {
-                transform: translateY(-100vh) translateX(100px);
-                opacity: 0;
-            }
+        @keyframes rotate-light {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        .container {
+        /* Container principal */
+        .dashboard-container {
             max-width: 1400px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.98);
-            border-radius: 30px;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
-            padding: 50px;
             position: relative;
             z-index: 1;
-            animation: slideIn 0.8s ease-out;
         }
 
-        @keyframes slideIn {
+        /* Header professionnel */
+        .dashboard-header {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px 50px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
             from {
                 opacity: 0;
-                transform: translateY(50px);
+                transform: translateY(-30px);
             }
             to {
                 opacity: 1;
@@ -78,88 +102,61 @@
             }
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
         }
 
-        .header h1 {
-            font-size: 3em;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 10px;
-            animation: fadeIn 1s ease-out;
+        .header-left h1 {
+            font-size: 2.5em;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
         }
 
-        .header p {
-            color: #666;
-            font-size: 1.2em;
-            animation: fadeIn 1.2s ease-out;
+        .header-left p {
+            font-size: 1.1em;
+            color: var(--gray);
+            font-weight: 500;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        /* Loading spinner */
-        .loading {
-            text-align: center;
-            padding: 100px 20px;
-            display: block;
-        }
-
-        .spinner {
-            border: 6px solid #f3f3f3;
-            border-top: 6px solid #667eea;
-            border-radius: 50%;
-            width: 80px;
-            height: 80px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .loading-text {
-            font-size: 1.3em;
-            color: #667eea;
+        .header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border-radius: 50px;
+            font-size: 0.9em;
             font-weight: 600;
+            box-shadow: 0 4px 15px var(--shadow);
         }
 
-        /* Chart container */
-        #chart_div {
-            width: 100%;
-            height: 600px;
-            margin: 30px 0;
-            display: none;
-            animation: fadeInChart 1s ease-out;
+        .badge-icon {
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        @keyframes fadeInChart {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        /* Statistics cards */
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            margin-top: 40px;
-            display: none;
-            animation: fadeInUp 1.2s ease-out;
+        /* Carte du graphique */
+        .chart-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            animation: fadeInUp 0.8s ease-out;
         }
 
         @keyframes fadeInUp {
@@ -173,13 +170,112 @@
             }
         }
 
-        .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .chart-title {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .chart-subtitle {
+            font-size: 0.95em;
+            color: var(--gray);
+            margin-top: 5px;
+        }
+
+        .chart-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            padding: 10px 20px;
+            background: var(--light);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 0.9em;
+            font-weight: 600;
+            color: var(--gray);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background: var(--primary);
             color: white;
-            padding: 30px;
-            border-radius: 20px;
+            border-color: var(--primary);
+        }
+
+        /* Loading professionnel */
+        .loading {
             text-align: center;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            padding: 80px 20px;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 25px;
+            border: 4px solid var(--border);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 8px;
+        }
+
+        .loading-subtext {
+            font-size: 0.95em;
+            color: var(--gray);
+        }
+
+        /* Chart */
+        #chart_div {
+            width: 100%;
+            height: 500px;
+            display: none;
+        }
+
+        /* Statistics Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+            display: none;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 10px 40px var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.8);
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
@@ -188,180 +284,311 @@
         .stat-card::before {
             content: '';
             position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            animation: rotate 20s linear infinite;
-        }
-
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%);
         }
 
         .stat-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px var(--shadow);
         }
 
-        .stat-card h3 {
-            font-size: 0.9em;
-            margin-bottom: 15px;
-            opacity: 0.9;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .stat-card p {
-            font-size: 3em;
-            font-weight: bold;
-            margin: 0;
-            position: relative;
-            z-index: 1;
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
         }
 
         .stat-icon {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            opacity: 0.8;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            box-shadow: 0 8px 20px var(--shadow);
         }
 
-        /* Error message */
+        .stat-trend {
+            padding: 6px 12px;
+            background: rgba(34, 197, 94, 0.1);
+            color: #16A34A;
+            border-radius: 8px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .stat-label {
+            font-size: 0.95em;
+            color: var(--gray);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .stat-value {
+            font-size: 2.8em;
+            font-weight: 800;
+            color: var(--dark);
+            line-height: 1;
+            letter-spacing: -1px;
+        }
+
+        .stat-description {
+            font-size: 0.9em;
+            color: var(--gray);
+            margin-top: 10px;
+        }
+
+        /* Error professionnel */
         .error {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
-            color: white;
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid #EF4444;
+            border-radius: 15px;
             padding: 30px;
-            border-radius: 20px;
             text-align: center;
-            margin: 30px 0;
             display: none;
-            animation: shake 0.5s;
         }
 
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
+        .error-icon {
+            width: 60px;
+            height: 60px;
+            background: #EF4444;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2em;
+            color: white;
         }
 
         .error h3 {
             font-size: 1.5em;
+            color: #DC2626;
             margin-bottom: 10px;
+            font-weight: 700;
         }
 
-        /* Back link */
-        .back-link {
-            text-align: center;
-            margin-top: 40px;
+        .error p {
+            font-size: 1.1em;
+            color: #991B1B;
         }
 
-        .back-link a {
-            display: inline-block;
-            padding: 15px 40px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        /* Footer avec bouton retour */
+        .dashboard-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px 40px;
+            box-shadow: 0 10px 40px var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .footer-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: var(--gray);
+            font-size: 0.95em;
+        }
+
+        .footer-divider {
+            width: 1px;
+            height: 20px;
+            background: var(--border);
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 35px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
             text-decoration: none;
-            border-radius: 50px;
+            border-radius: 12px;
             font-weight: 600;
-            font-size: 1.1em;
+            font-size: 1em;
+            box-shadow: 0 8px 25px var(--shadow);
             transition: all 0.3s ease;
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
         }
 
-        .back-link a:hover {
+        .back-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.6);
+            box-shadow: 0 12px 35px var(--shadow);
+        }
+
+        .back-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         /* Responsive */
-        @media (max-width: 768px) {
-            .container {
-                padding: 30px 20px;
+        @media (max-width: 968px) {
+            .dashboard-header {
+                padding: 30px;
             }
 
-            .header h1 {
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header-left h1 {
                 font-size: 2em;
             }
 
-            .header p {
-                font-size: 1em;
+            .chart-card {
+                padding: 25px;
+            }
+
+            .chart-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
             }
 
             #chart_div {
                 height: 400px;
             }
 
-            .stat-card p {
-                font-size: 2em;
+            .stat-value {
+                font-size: 2.2em;
+            }
+
+            .dashboard-footer {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Particules décoratives -->
-    <div class="particles">
-        <div class="particle" style="left: 10%; width: 10px; height: 10px; animation-delay: 0s;"></div>
-        <div class="particle" style="left: 20%; width: 15px; height: 15px; animation-delay: 2s;"></div>
-        <div class="particle" style="left: 30%; width: 8px; height: 8px; animation-delay: 4s;"></div>
-        <div class="particle" style="left: 40%; width: 12px; height: 12px; animation-delay: 6s;"></div>
-        <div class="particle" style="left: 50%; width: 10px; height: 10px; animation-delay: 8s;"></div>
-        <div class="particle" style="left: 60%; width: 14px; height: 14px; animation-delay: 10s;"></div>
-        <div class="particle" style="left: 70%; width: 9px; height: 9px; animation-delay: 12s;"></div>
-        <div class="particle" style="left: 80%; width: 11px; height: 11px; animation-delay: 14s;"></div>
-    </div>
+    <!-- Effet de lumière -->
+    <div class="light-effect"></div>
 
-    <div class="container">
-        <div class="header">
-            <h1>📊 Analyse des Commits</h1>
-            <p>Distribution des commits par minute (0-59)</p>
-        </div>
-
-        <!-- Loading -->
-        <div id="loading" class="loading">
-            <div class="spinner"></div>
-            <div class="loading-text">Chargement des données depuis GitHub...</div>
-        </div>
-
-        <!-- Error -->
-        <div id="error" class="error">
-            <h3>❌ Erreur</h3>
-            <p id="error-message"></p>
-        </div>
-
-        <!-- Chart -->
-        <div id="chart_div"></div>
-
-        <!-- Statistics -->
-        <div id="stats" class="stats">
-            <div class="stat-card">
-                <div class="stat-icon">📈</div>
-                <h3>Total de Commits</h3>
-                <p id="total-commits">0</p>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">🔥</div>
-                <h3>Minute la plus active</h3>
-                <p id="peak-minute">-</p>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">⚡</div>
-                <h3>Commits max/minute</h3>
-                <p id="max-commits">0</p>
-            </div>
-            <div class="stat-card">
-                <div class="stat-icon">📊</div>
-                <h3>Moyenne par minute</h3>
-                <p id="avg-commits">0</p>
+    <!-- Dashboard Container -->
+    <div class="dashboard-container">
+        
+        <!-- Header -->
+        <div class="dashboard-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <h1>Analyse des Commits</h1>
+                    <p>Dashboard analytique - Distribution temporelle</p>
+                </div>
+                <div class="header-badge">
+                    <div class="badge-icon">●</div>
+                    <span>En temps réel</span>
+                </div>
             </div>
         </div>
 
-        <div class="back-link">
-            <a href="/">← Retour à l'accueil</a>
+        <!-- Chart Card -->
+        <div class="chart-card">
+            <div class="chart-header">
+                <div>
+                    <div class="chart-title">Distribution par minute</div>
+                    <div class="chart-subtitle">Analyse de la fréquence des commits (0-59 minutes)</div>
+                </div>
+                <div class="chart-actions">
+                    <button class="action-btn" onclick="window.print()">📊 Exporter</button>
+                </div>
+            </div>
+
+            <!-- Loading -->
+            <div id="loading" class="loading">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">Chargement des données</div>
+                <div class="loading-subtext">Récupération depuis l'API GitHub...</div>
+            </div>
+
+            <!-- Error -->
+            <div id="error" class="error">
+                <div class="error-icon">⚠</div>
+                <h3>Erreur de chargement</h3>
+                <p id="error-message"></p>
+            </div>
+
+            <!-- Chart -->
+            <div id="chart_div"></div>
         </div>
+
+        <!-- Statistics Grid -->
+        <div id="stats" class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-trend">+100%</div>
+                </div>
+                <div class="stat-label">Total des Commits</div>
+                <div class="stat-value" id="total-commits">0</div>
+                <div class="stat-description">Nombre total de commits analysés</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-trend">Peak</div>
+                </div>
+                <div class="stat-label">Minute la plus active</div>
+                <div class="stat-value" id="peak-minute">--</div>
+                <div class="stat-description">Minute avec le plus de commits</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">⚡</div>
+                    <div class="stat-trend">Max</div>
+                </div>
+                <div class="stat-label">Commits Maximum</div>
+                <div class="stat-value" id="max-commits">0</div>
+                <div class="stat-description">Nombre maximum par minute</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">📈</div>
+                    <div class="stat-trend">Avg</div>
+                </div>
+                <div class="stat-label">Moyenne</div>
+                <div class="stat-value" id="avg-commits">0.00</div>
+                <div class="stat-description">Moyenne de commits par minute</div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="dashboard-footer">
+            <div class="footer-info">
+                <span>© 2024 Analytics Dashboard</span>
+                <div class="footer-divider"></div>
+                <span>Données mises à jour en temps réel</span>
+            </div>
+            <a href="/" class="back-btn">
+                <div class="back-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+                    </svg>
+                </div>
+                <span>Retour à l'accueil</span>
+            </a>
+        </div>
+
     </div>
 
     <script type="text/javascript">
@@ -369,7 +596,6 @@
         google.charts.setOnLoadCallback(loadCommitsData);
 
         function loadCommitsData() {
-            // CORRECTION : Utilisez la bonne route
             fetch('/api/commits-data')
                 .then(response => {
                     if (!response.ok) {
@@ -383,17 +609,11 @@
                         return;
                     }
 
-                    // Masquer le loading
                     document.getElementById('loading').style.display = 'none';
-                    
-                    // Afficher le graphique et les stats
                     document.getElementById('chart_div').style.display = 'block';
                     document.getElementById('stats').style.display = 'grid';
                     
-                    // Dessiner le graphique
                     drawChart(data);
-                    
-                    // Afficher les statistiques
                     displayStats(data);
                 })
                 .catch(error => {
@@ -402,23 +622,21 @@
         }
 
         function drawChart(data) {
-            // Préparer les données pour Google Charts
-            var chartData = [['Minute', 'Nombre de Commits', { role: 'style' }]];
+            var chartData = [['Minute', 'Commits', { role: 'style' }]];
+            
+            const maxValue = Math.max(...data.counts);
             
             for (let i = 0; i < data.minutes.length; i++) {
-                const minute = data.minutes[i];
-                const count = data.counts[i];
+                const value = data.counts[i];
+                let color = '#5B4FE9';
                 
-                // Couleur dégradée selon le nombre
-                let color = '#667eea';
-                if (count > 0) {
-                    const intensity = Math.min(count * 30, 255);
-                    color = rgb(102, ${126 + intensity}, 234);
+                if (value === maxValue && value > 0) {
+                    color = '#7C3AED';
                 }
                 
                 chartData.push([
-                    minute.toString().padStart(2, '0'), 
-                    count,
+                    data.minutes[i].toString().padStart(2, '0'), 
+                    value,
                     color
                 ]);
             }
@@ -426,30 +644,34 @@
             var dataTable = google.visualization.arrayToDataTable(chartData);
 
             var options = {
-                title: 'Nombre de commits par minute (0-59)',
+                title: '',
                 width: '100%',
-                height: 600,
+                height: 500,
                 hAxis: {
-                    title: 'Minute dans l\'heure',
-                    gridlines: { count: 12 },
-                    textStyle: { fontSize: 11 }
+                    title: 'Minute',
+                    gridlines: { color: '#E2E8F0', count: 12 },
+                    textStyle: { fontSize: 11, color: '#64748B', fontName: 'Inter' },
+                    titleTextStyle: { color: '#1E293B', bold: true, fontSize: 13, fontName: 'Inter' }
                 },
                 vAxis: {
                     title: 'Nombre de commits',
                     minValue: 0,
-                    gridlines: { color: '#f0f0f0' }
+                    gridlines: { color: '#F1F5F9' },
+                    textStyle: { color: '#64748B', fontName: 'Inter' },
+                    titleTextStyle: { color: '#1E293B', bold: true, fontSize: 13, fontName: 'Inter' }
                 },
                 legend: { position: 'none' },
-                bar: { groupWidth: '85%' },
+                bar: { groupWidth: '70%' },
                 chartArea: {
-                    width: '85%',
-                    height: '70%'
+                    width: '88%',
+                    height: '75%'
                 },
                 animation: {
                     startup: true,
-                    duration: 1000,
+                    duration: 1200,
                     easing: 'out'
-                }
+                },
+                backgroundColor: 'transparent'
             };
 
             var chart = new google.visualization.ColumnChart(
@@ -460,17 +682,15 @@
         }
 
         function displayStats(data) {
-            // Calculer les statistiques
             const totalCommits = data.counts.reduce((a, b) => a + b, 0);
             const maxCommits = Math.max(...data.counts);
             const peakMinute = data.counts.indexOf(maxCommits);
             const avgCommits = (totalCommits / 60).toFixed(2);
             
-            // Afficher les statistiques avec animation
-            animateValue('total-commits', 0, totalCommits, 1000);
+            animateValue('total-commits', 0, totalCommits, 1500);
             document.getElementById('peak-minute').textContent = 
                 peakMinute.toString().padStart(2, '0');
-            animateValue('max-commits', 0, maxCommits, 1000);
+            animateValue('max-commits', 0, maxCommits, 1500);
             document.getElementById('avg-commits').textContent = avgCommits;
         }
 
