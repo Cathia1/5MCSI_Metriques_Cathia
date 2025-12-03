@@ -86,5 +86,5 @@ def commits_page():
     return render_template("commits.html")
 
   
-if _name_ == "_main_":
+if _name_ == "__main__":
     app.run(debug=True)
