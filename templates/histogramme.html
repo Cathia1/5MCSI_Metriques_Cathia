@@ -4,87 +4,104 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Histogramme - Températures Tawarano</title>
-
+    
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
+    
     <script type="text/javascript">
-        google.charts.load("current", { packages: ["corechart"] });
+        
+        google.charts.load('current', {'packages':['corechart']});
+        
+ 
         google.charts.setOnLoadCallback(drawChart);
 
+       
         function drawChart() {
-
+            
             var data = google.visualization.arrayToDataTable([
-                ["Jour", "Température (°C)", { role: "style" }],
-                ["Lundi",     12, "#5470C6"],
-                ["Mardi",     14, "#91CC75"],
-                ["Mercredi",  11, "#FAC858"],
-                ["Jeudi",     16, "#EE6666"],
-                ["Vendredi",  18, "#73C0DE"],
-                ["Samedi",    20, "#3BA272"],
-                ["Dimanche",  17, "#FC8452"]
+                ['Mois', 'Température (°C)', { role: 'style' }],  
+                ['Janvier',     5,  '#5470C6'],     
+                ['Février',     7,  '#91CC75'],      
+                ['Mars',        12, '#FAC858'],      
+                ['Avril',       16, '#EE6666'],     
+                ['Mai',         20, '#73C0DE'],      
+                ['Juin',        24, '#3BA272'],      
+                ['Juillet',     27, '#FC8452'],      
+                ['Août',        26, '#9A60B4'],      
+                ['Septembre',   22, '#EA7CCC'],     
+                ['Octobre',     17, '#5470C6'],      
+                ['Novembre',    11, '#91CC75'],      
+                ['Décembre',    6,  '#FAC858']       
             ]);
 
+           
             var options = {
-                title: "Températures de Tawarano — par jour de la semaine",
-                width: 1000,
-                height: 500,
-                legend: { position: "none" },
-                hAxis: {
-                    title: "Jour de la semaine",
-                    slantedText: true,
+                title: 'Évolution des températures à Tawarano',  
+                width: 1200,                                     
+                height: 600,                                      
+                legend: { position: 'none' },                    
+                hAxis: {                                        
+                    title: 'Mois',
+                    slantedText: true,                            
                     slantedTextAngle: 45
                 },
-                vAxis: {
-                    title: "Température (°C)",
+                vAxis: {                                       
+                    title: 'Température (°C)',
                     minValue: 0
                 },
-                bar: { groupWidth: "70%" },
-                chartArea: {
-                    width: "80%",
-                    height: "70%"
+                bar: { groupWidth: '75%' },                   
+                chartArea: {                                    
+                    width: '80%',
+                    height: '70%'
                 }
             };
 
-            var chart = new google.visualization.ColumnChart(document.getElementById("chart_div"));
+    
+            var chart = new google.visualization.ColumnChart(
+                document.getElementById('chart_div')
+            );
+
+      
             chart.draw(data, options);
         }
     </script>
-
+    
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
-            background-color: #f7f7f7;
+            background-color: #f5f5f5;
         }
         h1 {
-            text-align: center;
             color: #333;
+            text-align: center;
         }
         #chart_div {
-            background: white;
-            border-radius: 10px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             padding: 20px;
-            max-width: 1100px;
-            margin: 0 auto;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin: 20px auto;
         }
         p {
             text-align: center;
-            margin-top: 15px;
+            margin-top: 20px;
         }
         a {
+            color: #4285F4;
             text-decoration: none;
-            color: #1a73e8;
             font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
-
 <body>
     <h1>Histogramme des températures - Tawarano</h1>
-
+    
+ 
     <div id="chart_div"></div>
-
+    
     <p><a href="/">Retour à l'accueil</a></p>
 </body>
 </html>
