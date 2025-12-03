@@ -38,7 +38,7 @@ def histogramme():
 # CORRECTION : Route pour les commits
 # ============================================
 
-GITHUB_COMMITS_URL = "https://api.github.com/repos/camcamslt/5MCSI_Metriques_camille/commits"
+GITHUB_COMMITS_URL = "https://api.github.com/repos/Cathia1/5MCSI_Metriques_Cathia/commits"
 
 @app.route("/api/commits-data")  # ← CHANGÉ ICI (enlevé le / final)
 def commits_data():
